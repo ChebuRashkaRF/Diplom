@@ -1,0 +1,147 @@
+{% extends "index.html" %}
+{% load static %}
+
+
+
+{% block title %}
+
+<title>Экспериментальное испытание</title>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="card border-dark mb-3">
+        <div class="card-header">
+            Экспериментальное испытание
+        </div>
+        <div class="card-body text-dark">
+            <p class="card-text"><b>Цель экспериментального испытания:</b> {{experimental.aim_experimental}}.</p>
+            <p class="card-text"><b>Стенд:</b> "{{experimental.stand.name_stand}}."</p>
+            <p class="card-text"><b>Дата испытания:</b> {{experimental.data_experimental}}</p>
+            <p>
+                <a class="btn btn-outline-dark" data-toggle="collapse" href="#report" role="button" aria-expanded="false" aria-controls="report">Технический отчет и отчетная документация</a>
+            </p>
+            <div class="row">
+                <div class="col">
+                    <div class="collapse multi-collapse" id="report">
+                        <div class="card card-body">
+                            <div class="container">
+                                {% for reports in experimental.reports_experimental.all %}
+                                <ul>
+                                    <li><a href="{{reports.report.url}}" class="text-secondary">{{reports.name_report}}</a></li>
+                                </ul>
+                                {% endfor%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="card-deck">
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Объект испытания
+            </div>
+            <div class="card-body text-dark">
+                <p class="card-text">
+                    <em>Названия объекта испытания:</em>
+                    <div class="container">
+                        <ol>
+                            {% for testobjects in experimental.testobjects.all %}
+                            <li class="mb-2">{{ testobjects.title_object }}.</li>
+                            {% endfor%}
+                        </ol>
+                    </div>
+                </p>
+                <p>
+                    {% for testobjects in experimental.testobjects.all %}
+                    {% if forloop.counter0 == 0 %}
+                    <a class="btn btn-outline-dark mb-2 btn-sm" data-toggle="collapse" href="#obj{{ forloop.counter}}" role="button" aria-expanded="false" aria-controls="obj{{ forloop.counter }}">Параметры {{forloop.counter}}-го объекта</a>
+                    {% else %}
+                    <button class="btn btn-outline-dark mb-2 btn-sm" type="button" data-toggle="collapse" data-target="#obj{{ forloop.counter}}" aria-expanded="false" aria-controls="obj{{ forloop.counter }}">Параметры {{ forloop.counter}}-го
+                        объекта</button>
+                    {% endif %}
+                    {% endfor%}
+                </p>
+                {% for testobjects in experimental.testobjects.all  %}
+                <div class="collapse multi-collapse mb-2" id="obj{{ forloop.counter }}">
+                    <div class="card card-body">
+                        <ul class="container">
+                            <u><em>{{forloop.counter}}. Параметры {{ testobjects.title_object}}</em></u>
+                            {% for parameter_object in testobjects.parameters_object.all %}
+                            <li class="mb-2 mt-3">{{ parameter_object.name_parametr_object}} {{ parameter_object.value_parametr_object}} {{ parameter_object.measure_parametr_object}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endfor%}
+            </div>
+        </div>
+
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Испытатель
+            </div>
+            <div class="card-body text-dark">
+                <p class="card-text">
+                    <em>Испытатель:</em>
+                    <div class="container">
+                        <ol>
+                            {% for tester in experimental.testers.all %}
+                            <li class="mb-2">{{ tester.last_name}} {{ tester.first_name|first}}. {{ tester.middle_name|first}}.</li>
+                            {% endfor%}
+                        </ol>
+                    </div>
+                </p>
+                <p>
+                    {% for tester in experimental.testers.all %}
+                    {% if forloop.counter0 == 0 %}
+                    <a class="btn btn-outline-dark mb-2 btn-sm" data-toggle="collapse" href="#tester-{{ forloop.counter }}" role="button" aria-expanded="false" aria-controls="Tester-{{ forloop.counter }}">{{forloop.counter}}. {{ tester.last_name}}
+                        {{ tester.first_name|first}}. {{ tester.middle_name|first}}.</a>
+                    {% else %}
+                    <button class="btn btn-outline-dark mb-2 btn-sm" type="button" data-toggle="collapse" data-target="#tester-{{ forloop.counter}}" aria-expanded="false" aria-controls="tester-{{ forloop.counter }}">{{forloop.counter}}. {{ tester.last_name}}
+                        {{ tester.first_name|first}}. {{ tester.middle_name|first}}.</button>
+                    {% endif %}
+                    {% endfor%}
+                </p>
+                {% for tester in experimental.testers.all  %}
+                <div class="collapse multi-collapse mb-2" id="tester-{{ forloop.counter }}">
+                    <div class="card card-body">
+                        <ul class="container">
+                            <u><em>{{forloop.counter}}. {{ tester.last_name}} {{ tester.first_name|first}}. {{ tester.middle_name|first}}.</em></u>
+                            <li class="mb-2 mt-3"><b>Фамалия:</b> {{ tester.last_name}}</li>
+                            <li class="mb-2"><b>Имя:</b> {{ tester.first_name}}</li>
+                            <li class="mb-2"><b>Отчество:</b> {{ tester.middle_name}}</li>
+                            <li class="mb-2"><b>Номер отдела:</b> {{ tester.department}}</li>
+                            <li class="mb-2"><b>Должность:</b> {{ tester.post}}</li>
+                        </ul>
+                    </div>
+                </div>
+                {% endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container text-right">
+    <input type="button" class="btn btn-dark btn-lg" onclick="history.back()" value="Назад">
+</div>
+
+
+
+{% endblock %}
+
+
+{% block script %}
+
+
+
+{% endblock %}

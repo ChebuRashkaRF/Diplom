@@ -1,0 +1,262 @@
+{% extends "generaltables/general_base.html" %}
+{% load static %}
+{% load auth_extras %}
+
+{% block title %}
+
+<title>Добавление объекта испытания</title>
+
+{% endblock %}
+
+{% block content %}
+{% if request.user|has_group:"Redactor" %}
+
+<div class="alert alert-secondary text-center" role="alert">
+    Добавление нового объекта испытания
+</div>
+<hr>
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+
+
+
+        <!-- <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div> -->
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Объект испытания
+            </div>
+            <div class="card-body text-dark">
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {% if form.title_object.errors %}
+                    <div class="container text-danger">
+                        {{ form.title_object.errors }}
+                    </div>
+                    {% endif %}
+                    {{ form.title_object.label_tag }} {{ form.title_object }}
+                    {% if form.title_object.help_text %}
+                    <p class="help text-black-50">{{ form.title_object.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Параметры объекта испытания
+            </div>
+            <div class="card-body text-dark">
+                <hr>
+                {{ formset.management_form }}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ formset.non_form_errors }}
+                    </div>
+                </div>
+                {% for form in formset %}
+                {% if forloop.revcounter0 > 5 %}
+                <div class="container font-italic text-center mb-3 ">
+                    {{forloop.counter}}
+                </div>
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="form-group">
+                        {% if form.name_parametr_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.name_parametr_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.name_parametr_object.label_tag }} {{ form.name_parametr_object }}
+                        {% if form.name_parametr_object.help_text %}
+                        <p class="help text-black-50">{{ form.name_parametr_object.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.value_parametr_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.value_parametr_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.value_parametr_object.label_tag }} {{ form.value_parametr_object }}<br>
+                        {% if form.value_parametr_object.help_text %}
+                        <small class="help text-black-50">{{ form.value_parametr_object.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.measure_parametr_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.measure_parametr_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.measure_parametr_object.label_tag }} {{ form.measure_parametr_object }}<br>
+                        {% if form.measure_parametr_object.help_text %}
+                        <small class="help text-black-50">{{ form.measure_parametr_object.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+
+
+
+                {% elif forloop.revcounter0 == 4 %}
+
+                <div class="container mb-3">
+
+                    <a href="#" id="hide" class="btn btn-secondary" onclick="return false">Скрыть дополнительные 5 полей</a>
+                    <a href="#" id="show" class="btn btn-secondary" style="display:none" onclick="return false">Показать дополнительные 5 полей</a>
+                </div>
+
+
+                <div id="comments">
+                    <div class="container font-italic text-center mb-3 ">
+                        {{forloop.counter}}
+                    </div>
+                    <div class="container">
+                        <div class="text-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="form-group">
+                            {% if form.name_parametr_object.errors %}
+                            <div class="container text-danger">
+                                {{ form.name_parametr_object.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.name_parametr_object.label_tag }} {{ form.name_parametr_object }}
+                            {% if form.name_parametr_object.help_text %}
+                            <p class="help text-black-50">{{ form.name_parametr_object.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.value_parametr_object.errors %}
+                            <div class="container text-danger">
+                                {{ form.value_parametr_object.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.value_parametr_object.label_tag }} {{ form.value_parametr_object }}<br>
+                            {% if form.value_parametr_object.help_text %}
+                            <small class="help text-black-50">{{ form.value_parametr_object.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.measure_parametr_object.errors %}
+                            <div class="container text-danger">
+                                {{ form.measure_parametr_object.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.measure_parametr_object.label_tag }} {{ form.measure_parametr_object }}<br>
+                            {% if form.measure_parametr_object.help_text %}
+                            <small class="help text-black-50">{{ form.measure_parametr_object.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+
+
+                    {% else %}
+
+                    <div class="container font-italic text-center mb-3 ">
+                        {{forloop.counter}}
+                    </div>
+                    <div class="container">
+                        <div class="text-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="form-group">
+                            {% if form.name_parametr_object.errors %}
+                            <div class="container text-danger">
+                                {{ form.name_parametr_object.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.name_parametr_object.label_tag }} {{ form.name_parametr_object }}
+                            {% if form.name_parametr_object.help_text %}
+                            <p class="help text-black-50">{{ form.name_parametr_object.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.value_parametr_object.errors %}
+                            <div class="container text-danger">
+                                {{ form.value_parametr_object.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.value_parametr_object.label_tag }} {{ form.value_parametr_object }}<br>
+                            {% if form.value_parametr_object.help_text %}
+                            <small class="help text-black-50">{{ form.value_parametr_object.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.measure_parametr_object.errors %}
+                            <div class="container text-danger">
+                                {{ form.measure_parametr_object.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.measure_parametr_object.label_tag }} {{ form.measure_parametr_object }}<br>
+                            {% if form.measure_parametr_object.help_text %}
+                            <small class="help text-black-50">{{ form.measure_parametr_object.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <br>
+            </div>
+        </div>
+
+        <input type=button class="btn btn-dark mb-3" value="Закрыть окно" onClick="popupWin = window.close()">
+        <input type="submit" class="btn btn-dark mb-3" value="Добавить объект испытания">
+    </form>
+</div>
+{% else %}
+<div class="container text-center alert alert-danger" role="alert">
+    <h1>Доступ запрещен</h1>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+
+{% block script %}
+
+<script type="text/javascript">
+    function hideComments() {
+        $("#comments").hide(1000, function() {
+            $("#hide").hide();
+            $("#show").show();
+        });
+    }
+
+    function showComments() {
+        $("#hide").show();
+        $("#show").hide();
+        $("#comments").show(1000);
+    }
+
+    $(document).ready(function() {
+        $("#hide").bind("click", hideComments);
+        $("#show").bind("click", showComments);
+    });
+</script>
+
+{% endblock %}

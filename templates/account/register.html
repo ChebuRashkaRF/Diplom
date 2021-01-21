@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+
+{% block title %}
+<title>Регистрация</title>
+{% endblock %}
+
+
+{% block content %}
+
+<style media="screen">
+    .errorlist {
+        color:red;
+        padding: 5px;
+    }
+</style>
+
+<div class="container">
+    <div class="card border-dark mb-3">
+        <div class="card-header text-center">
+            Регистрация
+        </div>
+        <div class="card-body text-dark">
+            <p class="card-text ">
+                <form action="" method="post">
+                <div class="text-center">
+                <p>Пожалуйста, используйте следующую форму для регистрации в системе:</p>
+                </div>
+                <hr>
+                <div class="login-form">
+                    <form action="{% url 'login' %}" method="post">
+                        <div class="form-group">
+                            {{ user_form.as_p }}
+                            {% csrf_token %}
+                            <p><input class="btn btn-info" type="submit" value="Регистрироваться"></p>
+                        </div>
+                    </form>
+                </div>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

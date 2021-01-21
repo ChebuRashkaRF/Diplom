@@ -1,0 +1,119 @@
+{% extends "index.html" %}
+{% load static %}
+
+
+{% block title %}
+
+<title>Расчетные испытания на стенде "{{name_stand}}"</title>
+
+{% endblock %}
+
+<!-- table-responsive -->
+{% block content %}
+
+<div class="container text-center">
+    <h3><em>Расчетные испытания на стенде "{{name_stand}}"</em></h3>
+</div>
+<br>
+<div class="container table-responsive">
+    <table id="calculatedtrials" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Цель расчетного испытания</th>
+                <th>Название объекта испытания</th>
+                <th>Испытатель</th>
+                <th>Технические отчеты и отчетные документации</th>
+                <th>Графики</th>
+                <th>Расчетнаы файлы</th>
+                <th>Дата расчетного испытания</th>
+                <th>&nbsp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for calculated in calculateds%}
+            <tr>
+                <td class="container">{{ calculated.aim_calculated}}</td>
+                <td class="container text-center">{{calculated.testobject.title_object}}</td>
+                <td>
+                    <ul class="container">
+                        {% for tester in calculated.testers.all %}
+                        <li class="mb-2">{{ tester.last_name}} {{ tester.first_name|first}}. {{ tester.middle_name|first}}.</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul class="container">
+                        {% for report_calculated in calculated.reports_calculated.all %}
+                        <li class="mb-2"><a href="{{report_calculated.report.url}}" class="text-secondary">{{report_calculated.name_report}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul class="container">
+                        {% for graph_calculated in calculated.graphs.all %}
+                        <li class="mb-2"><a href="{{graph_calculated.graph.url}}" class="text-secondary">{{graph_calculated.name_graph}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul class="container">
+                        {% for settlementfile_calculated in calculated.settlementfiles.all %}
+                        <li class="mb-2"><a href="{{settlementfile_calculated.settlementfile.url}}" class="text-secondary">{{settlementfile_calculated.name_settlementfile}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td class="container text-center">{{ calculated.data_calculated}}</td>
+                <td><a href="{{ calculated.get_detail_url }}" target="_self" class="text-info" title="Полная информация об испытании">Подробнее...</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="20" align="center">Испытания не проходили</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Цель расчетного испытания</th>
+                <th>Название объекта испытания</th>
+                <th>Испытатель</th>
+                <th>Технические отчеты и отчетные документации</th>
+                <th>Графики</th>
+                <th>Расчетнаы файлы</th>
+                <th>Дата расчетного испытания</th>
+                <th>&nbsp</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+    $(document).ready(function() {
+        $('#calculatedtrials').DataTable({
+            // сортировка по первому столбцу
+            "order": [
+                [0, "asc"]
+            ],
+            // прокрутка таблицы
+            scrollY: '50vh',
+            "scrollX": true,
+            // отмена поиска по заданным столбцам
+            "columnDefs": [{
+                "targets": [7, 3, 4, 5],
+                "searchable": false
+            }],
+            "language": {
+                "url": "{% static 'DataTables/Russian.json' %}"
+            },
+            // "pageLength": 10,
+            // "scrollY": 500,
+        });
+    });
+</script>
+
+{% endblock %}

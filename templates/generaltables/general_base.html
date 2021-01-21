@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <!-- Кодировка веб-страницы -->
+    <meta charset="utf-8">
+    <!-- Настройка viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Подключаем Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap4/css/bootstrap.min.css' %}" type="text/css">
+
+    <!-- Подключаем styles -->
+    <link rel="stylesheet" href="{% static 'index/css/style.css' %}" type="text/css">
+
+    <!-- Подключаем DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'DataTables/dataTables.min.css' %}">
+
+    <!-- <script src="{% static 'clone.js' %}"></script> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}"> -->
+    {% block title %}
+    <title>Диплом</title>
+    {% endblock %}
+
+</head>
+
+<body>
+
+    {% block content %}
+
+    {% endblock %}
+
+
+
+    <!-- Подключаем jQuery -->
+    <script src="{% static 'bootstrap4/js/jquery.min.js' %}"></script>
+    <!-- Подключаем плагин Popper -->
+    <script src="{% static 'bootstrap4/js/popper.min.js' %}"></script>
+    <!-- Подключаем Bootstrap JS -->
+    <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
+
+    <!-- Подключаем DataTables jQuery -->
+    <script src="{% static 'DataTables/jquery-3.5.1.js' %}"></script>
+
+    <!-- Подключаем DataTables JS -->
+    <script src="{% static 'DataTables/jquery.dataTables.min.js' %}"></script>
+
+    <!-- <script type="text/javascript">
+    $('#add_more').click(function() {
+        cloneMore('#go.table:last', 'service');
+    });
+
+    </script> -->
+
+    {% block script %}
+
+    {% endblock %}
+
+</body>
+
+
+
+</html>

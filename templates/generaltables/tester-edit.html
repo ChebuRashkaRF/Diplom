@@ -1,0 +1,122 @@
+{% extends "generaltables/general_base.html" %}
+{% load static %}
+{% load auth_extras %}
+
+{% block title %}
+
+<title>Редоктирование объекта испытания</title>
+
+{% endblock %}
+
+{% block content %}
+{% if request.user|has_group:"Redactor" %}
+
+<div class="alert alert-secondary text-center" role="alert">
+    Редоктирование объекта испытания
+</div>
+<hr>
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Испытатель
+            </div>
+            <div class="card-body text-dark">
+                {{ formset.management_form }}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ formset.non_form_errors }}
+                    </div>
+                </div>
+                {% for form in formset %}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="container">
+                    {{ form.id }}
+                    <div class="form-group">
+                        {% if form.last_name.errors %}
+                        <div class="container text-danger">
+                            {{ form.last_name.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.last_name.label_tag }} {{ form.last_name }}
+                        {% if form.last_name.help_text %}
+                        <p class="help text-black-50">{{ form.last_name.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.first_name.errors %}
+                        <div class="container text-danger">
+                            {{ form.first_name.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.first_name.label_tag }} {{ form.first_name }}
+                        {% if form.first_name.help_text %}
+                        <p class="help text-black-50">{{ form.first_name.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.middle_name.errors %}
+                        <div class="container text-danger">
+                            {{ form.middle_name.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.middle_name.label_tag }} {{ form.middle_name }}
+                        {% if form.middle_name.help_text %}
+                        <p class="help text-black-50">{{ form.middle_name.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.department.errors %}
+                        <div class="container text-danger">
+                            {{ form.department.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.department.label_tag }} {{ form.department }}
+                        {% if form.department.help_text %}
+                        <p class="help text-black-50">{{ form.department.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.post.errors %}
+                        <div class="container text-danger">
+                            {{ form.post.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.post.label_tag }} {{ form.post }}
+                        {% if form.post.help_text %}
+                        <p class="help text-black-50">{{ form.post.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if formset.can_delete %}
+                        Удалить: {{ form.DELETE }}
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+        <input type=button class="btn btn-dark mb-3" value="Закрыть окно" onClick="popupWin = window.close()">
+        <input type="submit" class="btn btn-dark mb-3" value="Редактировать испытателя">
+    </form>
+</div>
+{% else %}
+<div class="container text-center alert alert-danger" role="alert">
+    <h1>Доступ запрещен</h1>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+
+{% block script %}
+
+
+{% endblock %}

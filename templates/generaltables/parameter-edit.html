@@ -1,0 +1,161 @@
+{% extends "generaltables/general_base.html" %}
+{% load static %}
+{% load auth_extras %}
+
+
+{% block title %}
+
+<title>Редоктирование параметров объекта испытания</title>
+
+{% endblock %}
+
+{% block content %}
+{% if request.user|has_group:"Redactor" %}
+
+<div class="alert alert-secondary text-center" role="alert">
+    Редоктирование параметров объекта испытания
+</div>
+<hr>
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Пармаметры объекта испытания
+            </div>
+            <div class="card-body text-dark">
+                <hr>
+                {{ formset_model.management_form }}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ formset_model.non_form_errors }}
+                    </div>
+                </div>
+                {% for form in formset_model %}
+                <div class="container font-italic text-center mb-3 ">
+                    {{forloop.counter}}. Редактировать.
+                </div>
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="container">
+                    {{ form.id }}
+                    <div class="form-group">
+                        {% if form.name_parametr_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.name_parametr_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.name_parametr_object.label_tag }} {{ form.name_parametr_object }}
+                        {% if form.name_parametr_object.help_text %}
+                        <p class="help text-black-50">{{ form.name_parametr_object.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.value_parametr_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.value_parametr_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.value_parametr_object.label_tag }} {{ form.value_parametr_object }}<br>
+                        {% if form.value_parametr_object.help_text %}
+                        <small class="help text-black-50">{{ form.value_parametr_object.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.measure_parametr_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.measure_parametr_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.measure_parametr_object.label_tag }} {{ form.measure_parametr_object }}<br>
+                        {% if form.measure_parametr_object.help_text %}
+                        <small class="help text-black-50">{{ form.measure_parametr_object.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if formset_model.can_delete %}
+                        Удалить: {{ form.DELETE }}
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+
+
+                {{ formset.management_form }}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ formset.non_form_errors }}
+                    </div>
+                </div>
+                {% for form in formset %}
+                <div class="container font-italic text-center mb-3 ">
+                    {{forloop.counter}}. Добавить.
+                </div>
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="form-group">
+                        {% if form.name_parametr_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.name_parametr_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.name_parametr_object.label_tag }} {{ form.name_parametr_object }}
+                        {% if form.name_parametr_object.help_text %}
+                        <p class="help text-black-50">{{ form.name_parametr_object.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.value_parametr_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.value_parametr_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.value_parametr_object.label_tag }} {{ form.value_parametr_object }}<br>
+                        {% if form.value_parametr_object.help_text %}
+                        <small class="help text-black-50">{{ form.value_parametr_object.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.measure_parametr_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.measure_parametr_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.measure_parametr_object.label_tag }} {{ form.measure_parametr_object }}<br>
+                        {% if form.measure_parametr_object.help_text %}
+                        <small class="help text-black-50">{{ form.measure_parametr_object.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+                <br>
+            </div>
+        </div>
+        <input type="button" class="btn btn-dark mb-3" onclick="history.back()" value="Назад">
+        <input type="submit" class="btn btn-dark mb-3" value="Редактировать параметры">
+    </form>
+</div>
+{% else %}
+<div class="container text-center alert alert-danger" role="alert">
+    <h1>Доступ запрещен</h1>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+
+
+{% block script %}
+
+
+{% endblock %}

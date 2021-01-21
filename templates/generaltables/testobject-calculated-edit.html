@@ -1,0 +1,79 @@
+{% extends "generaltables/general_base.html" %}
+{% load static %}
+{% load auth_extras %}
+
+{% block title %}
+
+<title>Редоктирование объекта испытания</title>
+
+{% endblock %}
+
+{% block content %}
+{% if request.user|has_group:"Redactor" %}
+
+<div class="alert alert-secondary text-center" role="alert">
+    Редоктирование объекта испытания
+</div>
+<hr>
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Объект испытания
+            </div>
+            <div class="card-body text-dark">
+                {{ formset.management_form }}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ formset.non_form_errors }}
+                    </div>
+                </div>
+                {% for form in formset %}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="container">
+                    {{ form.id }}
+                    <div class="form-group">
+                        {% if form.title_object.errors %}
+                        <div class="container text-danger">
+                            {{ form.title_object.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.title_object.label_tag }} {{ form.title_object }}
+                        {% if form.title_object.help_text %}
+                        <p class="help text-black-50">{{ form.title_object.help_text|safe }}</p>
+                        {% endif %}
+                        <a href="{% url 'stands:parameter-calculated-edit' slug_calculated=calculated.slug_calculated testobjectid=calculated.testobject.id %}" target="_self" class="btn btn-secondary btn-sm mb-3 mt-2" title="Редактировать параметры"><img src="{% static 'image/edit.png' %}" width="15px" height="15px" alt="Редактировать параметры"> Редактировать параметры</a>
+                    </div>
+                    <div class="form-group">
+                        {% if formset.can_delete %}
+                        Удалить: {{ form.DELETE }}
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+        <input type=button class="btn btn-dark mb-3" value="Закрыть окно" onClick="popupWin = window.close()">
+        <input type="submit" class="btn btn-dark mb-3" value="Редактировать объект испытания">
+    </form>
+</div>
+{% else %}
+<div class="container text-center alert alert-danger" role="alert">
+    <h1>Доступ запрещен</h1>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+
+{% block script %}
+
+
+{% endblock %}

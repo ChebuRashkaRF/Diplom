@@ -1,0 +1,104 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+
+<title>Экспериментальные испытания на стенде "{{name_stand}}"</title>
+
+{% endblock %}
+
+<!-- table-responsive -->
+{% block content %}
+<div class="container text-center">
+    <h3><em>Экспериментальные испытания на стенде "{{name_stand}}"</em></h3>
+</div>
+<br>
+<div class="container table-responsive">
+    <table id="experimentaltrials" class="display table " style="width:100%">
+        <thead>
+            <tr>
+                <th>Цель экспериментального испытания</th>
+                <th>Название объекта испытания</th>
+                <th>Испытатель</th>
+                <th>Технические отчеты и отчетные документации</th>
+                <th>Дата экспериментального испытания</th>
+                <th>&nbsp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for experimental in experimentals%}
+            <tr>
+                <td class="container">{{ experimental.aim_experimental}}</td>
+                <td>
+                    <ul class="container">
+                        {% for testobjects in experimental.testobjects.all %}
+                        <li class="mb-2">{{ testobjects.title_object}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul class="container">
+                        {% for tester in experimental.testers.all %}
+                        <li class="mb-2">{{ tester.last_name}} {{ tester.first_name|first}}. {{ tester.middle_name|first}}.</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul class="container">
+                        {% for report_experimental in experimental.reports_experimental.all %}
+                        <li class="mb-2"><a href="{{report_experimental.report.url}}" class="text-secondary">{{report_experimental.name_report}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td class="container text-center">{{ experimental.data_experimental}}</td>
+                <td><a href="{{ experimental.get_detail_url }}" target="_self" class="text-info" title="Полная информация об испытании">Подробнее...</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="20" align="center">Испытания не проходили</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Цель экспериментального испытания</th>
+                <th>Название объекта испытания</th>
+                <th>Испытатель</th>
+                <th>Технические отчеты и отчетные документации</th>
+                <th>Дата экспериментального испытания</th>
+                <th>&nbsp</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+    $(document).ready(function() {
+        $('#experimentaltrials').DataTable({
+            // сортировка по первому столбцу
+            "order": [
+                [0, "asc"]
+            ],
+            // прокрутка таблицы
+            scrollY: '50vh',
+            "scrollX": true,
+            // отмена поиска по заданным столбцам
+            "columnDefs": [{
+                "targets": [5, 3],
+                "searchable": false
+            }],
+            "language": {
+                "url": "{% static 'DataTables/Russian.json' %}"
+            },
+            // "pageLength": 10,
+            // "scrollY": 500,
+        });
+    });
+</script>
+
+{% endblock %}

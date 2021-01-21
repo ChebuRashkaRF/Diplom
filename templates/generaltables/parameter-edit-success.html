@@ -1,0 +1,62 @@
+{% extends "generaltables/general_base.html" %}
+{% load static %}
+{% load auth_extras %}
+
+
+{% block title %}
+
+<title>Отредактированные параметры объекта испытания</title>
+
+{% endblock %}
+
+
+{% block content %}
+{% if request.user|has_group:"Redactor" %}
+
+<div class="container">
+    <div class="card border-dark mb-3">
+        <div class="card-header">
+            <div class="alert alert-success" role="alert">
+                Параметры объекта испытания успешно изменены!
+            </div>
+        </div>
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Объект испытания
+            </div>
+            <div class="card-body text-dark">
+                <p class="card-text">
+                    <em>Названия объекта испытания:</em>
+                    <div class="container mb-2">
+                        {{ testobject.title_object }}
+                    </div>
+                </p>
+                <p>
+                    <a class="btn btn-outline-dark mb-2 btn-sm" data-toggle="collapse" href="#obj" role="button" aria-expanded="false" aria-controls="obj">Параметры {{ testobject.title_object }}</a>
+                </p>
+                <div class="collapse multi-collapse mb-2" id="obj">
+                    <div class="card card-body">
+                        <ul class="container">
+                            <u><em> Параметры {{ testobject.title_object}}</em></u>
+                            {% for parameter_object in testobject.parameters_object.all %}
+                            <li class="mb-2 mt-3">{{ parameter_object.name_parametr_object}} {{ parameter_object.value_parametr_object}} {{ parameter_object.measure_parametr_object}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'stands:testobject-edit' slug_experimental=slug_experimental %}" target="_self" class="btn btn-dark mb-3 btn-lg btn-block" title="Продолжить">Продолжить</a>
+</div>
+{% else %}
+<div class="container text-center alert alert-danger" role="alert">
+    <h1>Доступ запрещен</h1>
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}

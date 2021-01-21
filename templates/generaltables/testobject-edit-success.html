@@ -1,0 +1,77 @@
+{% extends "generaltables/general_base.html" %}
+{% load static %}
+{% load auth_extras %}
+
+{% block title %}
+
+<title>Отредактированный объект испытания</title>
+
+{% endblock %}
+
+
+{% block content %}
+{% if request.user|has_group:"Redactor" %}
+
+<div class="container">
+    <div class="card border-dark mb-3">
+        <div class="card-header">
+            <div class="alert alert-success" role="alert">
+                Объект испытания успешно изменен!
+            </div>
+        </div>
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Объект испытания
+            </div>
+            <div class="card-body text-dark">
+                <p class="card-text">
+                    <em>Названия объекта испытания:</em>
+                    <div class="container">
+                        <ol>
+                            {% for testobject in testobjects %}
+                            <li class="mb-2">{{ testobject.title_object }}.</li>
+                            {% endfor%}
+                        </ol>
+                    </div>
+                </p>
+                <p>
+                    {% for testobject in testobjects %}
+                    {% if forloop.counter0 == 0 %}
+                    <a class="btn btn-outline-dark mb-2 btn-sm" data-toggle="collapse" href="#obj{{ forloop.counter}}" role="button" aria-expanded="false" aria-controls="obj{{ forloop.counter }}">Параметры {{forloop.counter}}-го объекта</a>
+                    {% else %}
+                    <button class="btn btn-outline-dark mb-2 btn-sm" type="button" data-toggle="collapse" data-target="#obj{{ forloop.counter}}" aria-expanded="false" aria-controls="obj{{ forloop.counter }}">Параметры {{ forloop.counter}}-го
+                        объекта</button>
+                    {% endif %}
+                    {% endfor%}
+                </p>
+                {% for testobject in testobjects %}
+                <div class="collapse multi-collapse mb-2" id="obj{{ forloop.counter }}">
+                    <div class="card card-body">
+                        <ul class="container">
+                            <u><em>{{forloop.counter}}. Параметры {{ testobjects.title_object}}</em></u>
+                            {% for parameter_object in testobject.parameters_object.all %}
+                            <li class="mb-2 mt-3">{{ parameter_object.name_parametr_object}} {{ parameter_object.value_parametr_object}} {{ parameter_object.measure_parametr_object}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endfor%}
+            </div>
+        </div>
+    </div>
+    <form>
+        <input type=button class="btn btn-dark mb-3 btn-lg btn-block" value="Продолжить" onClick="popupWin = window.close()">
+    </form>
+</div>
+{% else %}
+<div class="container text-center alert alert-danger" role="alert">
+    <h1>Доступ запрещен</h1>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}

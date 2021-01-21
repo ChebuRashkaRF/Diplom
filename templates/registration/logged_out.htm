@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+
+
+{% block title %}
+<title>Выход</title>
+{% endblock %}
+
+
+{% block content %}
+<h1>Выход</h1>
+<div class="module">
+    <p>Вы вышли из системы.
+        Вы можете <a href="{% url "login" %}">войти снова</a>.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "index.html" %}
+{% load static %}
+{% load auth_extras %}
+
+{% block title %}
+
+<title>Экспериментальные испытания</title>
+
+{% endblock %}
+
+<!-- table-responsive -->
+{% block content %}
+{% if request.user|has_group:"Redactor" %}
+<div class="container text-center">
+    <h3><em>Экспериментальные испытания</em></h3>
+</div>
+<br>
+<div class="container table-responsive">
+    <table id="experimentaltrials" class="display table " style="width:100%">
+        <thead>
+            <tr>
+                <th>&nbsp</th>
+                <th>Цель экспериментального испытания</th>
+                <th>Стенд</th>
+                <th>Название объекта испытания</th>
+                <th>Испытатель</th>
+                <th>Технические отчеты и отчетные документации</th>
+                <th>Дата экспериментального испытания</th>
+                <th>&nbsp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for experimental in experimentals%}
+            <tr>
+                <td><a href="{{ experimental.get_edit_url }}" target="_self" class="text-info" title="Редактирование экспериментального испытания"><img src="{% static 'image/edit.png' %}" width="15px" height="15px" alt="Редактировать экспериментальное испытание"></a><br><a href="{% url 'stands:experimental-info-delete' slug_experimental=experimental.slug_experimental %}" target="_self" class="text-info" title="Удаление экспериментального испытания"><img src="{% static 'image/del.png' %}" width="15px" height="15px" alt="Редактировать экспериментальное испытание"></a>
+                </td>
+                <td class="container">{{ experimental.aim_experimental}}</td>
+                <td>
+                    <ul class="container">
+                        {% for testobjects in experimental.testobjects.all %}
+                        <li class="mb-2">{{ testobjects.title_object}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <div class="text-center">
+                        {{ experimental.stand.name_stand }}
+                    </div>
+                </td>
+                <td>
+                    <ul class="container">
+                        {% for tester in experimental.testers.all %}
+                        <li class="mb-2">{{ tester.last_name}} {{ tester.first_name|first}}. {{ tester.middle_name|first}}.</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul class="container">
+                        {% for report_experimental in experimental.reports_experimental.all %}
+                        <li class="mb-2"><a href="{{report_experimental.report.url}}" class="text-secondary">{{report_experimental.name_report}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td class="container text-center">{{ experimental.data_experimental}}</td>
+                <td><a href="{{ experimental.get_detail_url }}" target="_self" class="text-info" title="Полная информация об испытании">Подробнее...</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="20" align="center">Испытания не проходили</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>&nbsp</th>
+                <th>Цель экспериментального испытания</th>
+                <th>Стенд</th>
+                <th>Название объекта испытания</th>
+                <th>Испытатель</th>
+                <th>Технические отчеты и отчетные документации</th>
+                <th>Дата экспериментального испытания</th>
+                <th>&nbsp</th>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="text-right">
+        <a href="{% url 'stands:experimental-add' %}" class="btn btn-dark mb-3 mt-2" title="Добавить экспериментальное испытание"><img src="{% static 'image/add.png' %}" width="15px" height="15px" alt="Добавить экспериментальное испытание"> Добавить экспериментальное испытание</a>
+    </div>
+</div>
+{% else %}
+<div class="container text-center alert alert-danger" role="alert">
+    <h1>Доступ запрещен</h1>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+    $(document).ready(function() {
+        $('#experimentaltrials').DataTable({
+            // сортировка по первому столбцу
+            "order": [
+                [1, "asc"]
+            ],
+            // прокрутка таблицы
+            scrollY: '50vh',
+            "scrollX": true,
+            // отмена поиска по заданным столбцам
+            "columnDefs": [{
+                "targets": [0, 5, 7],
+                "searchable": false
+            }],
+            "language": {
+                "url": "{% static 'DataTables/Russian.json' %}"
+            },
+            // "pageLength": 10,
+            // "scrollY": 500,
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,249 @@
+{% extends "index.html" %}
+{% load static %}
+{% load auth_extras %}
+
+
+{% block title %}
+
+<title>Редактирование экспериментального испытания</title>
+
+{% endblock %}
+
+{% block content %}
+{% if request.user|has_group:"Redactor" %}
+
+<div class="alert alert-secondary text-center" role="alert">
+    Редоктирование экспериментального испытания
+</div>
+<hr>
+<div class="container">
+    <form enctype="multipart/form-data" action="" method="post">
+        {% csrf_token %}
+
+        <a href="javascript:window.location.reload()" class="btn btn-secondary mb-3">Обновить</a>
+
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Экспериментальное испытание
+            </div>
+            <div class="card-body text-dark">
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {% if form.aim_experimental.errors %}
+                    <div class="container text-danger">
+                        {{ form.aim_experimental.errors }}
+                    </div>
+                    {% endif %}
+                    {{ form.aim_experimental.label_tag }} {{ form.aim_experimental }}
+                    {% if form.aim_experimental.help_text %}
+                    <p class="help text-black-50">{{ form.aim_experimental.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {% if form.stand.errors %}
+                    <div class="container text-danger">
+                        {{ form.stand.errors }}
+                    </div>
+                    {% endif %}
+                    {{ form.stand.label_tag }} {{ form.stand }}
+                    {% if form.stand.help_text %}
+                    <p class="help text-black-50">{{ form.stand.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {% if form.testobjects.errors %}
+                    <div class="container text-danger">
+                        {{ form.testobjects.errors }}
+                    </div>
+                    {% endif %}
+                    {{ form.testobjects.label_tag }} {{ form.testobjects }}
+                    <a href="{% url 'stands:testobject-add' %}" target="_blank" class="btn btn-secondary btn-sm mb-3 mr-2" title="Добавить объект испытания"
+                        onClick="popupWin = window.open(this.href, 'contacts', 'location,width=500,height=600,top=0'); popupWin.focus(); return false;"><img src="{% static 'image/add.png' %}" width="15px" height="15px"
+                            alt="Добавить объект испытания"> Добавить объект испытания</a>
+                    <a href="{% url 'stands:testobject-edit' slug_experimental=experimental.slug_experimental %}" target="_blank" class="btn btn-secondary btn-sm mb-3 mr-2" title="Редактировать объект испытания"
+                        onClick="popupWin = window.open(this.href, 'contacts', 'location,width=500,height=600,top=0'); popupWin.focus(); return false;"><img src="{% static 'image/edit.png' %}" width="15px" height="15px"
+                            alt="Редактировать объект испытания"> Редактировать объект испытания</a>
+                    {% if form.testobjects.help_text %}
+                    <p class="help text-black-50">{{ form.testobjects.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {% if testers.errors %}
+                    <div class="container text-danger">
+                        {{ form.testers.errors }}
+                    </div>
+                    {% endif %}
+                    {{ form.testers.label_tag }} {{ form.testers }}
+                    <a href="{% url 'stands:tester-add' %}" target="_blank" class="btn btn-secondary btn-sm mb-3 mr-2" title="Добавить испытателя"
+                        onClick="popupWin = window.open(this.href, 'contacts', 'location,width=500,height=600,top=0'); popupWin.focus(); return false;"><img src="{% static 'image/add.png' %}" width="15px" height="15px" alt="Добавить испытателя">
+                        Добавить испытателя</a>
+                    <a href="{% url 'stands:tester-edit' slug_experimental=experimental.slug_experimental %}" target="_blank" class="btn btn-secondary btn-sm mb-3 mr-2" title="Редактировать испытателя" onClick="popupWin = window.open(this.href, 'contacts', 'location,width=500,height=600,top=0'); popupWin.focus(); return false;"><img src="{% static 'image/edit.png' %}" width="15px" height="15px" alt="Редактировать испытателя"> Редактировать испытателя</a>
+                    {% if form.testers.help_text %}
+                    <p class="help text-black-50">{{ form.testers.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {% if data_experimental.errors %}
+                    <div class="container text-danger">
+                        {{ form.data_experimental.errors }}
+                    </div>
+                    {% endif %}
+                    {{ form.data_experimental.label_tag }} {{ form.data_experimental }}<br>
+                    {% if form.data_experimental.help_text %}
+                    <small class="help text-black-50">{{ form.data_experimental.help_text|safe }}</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Технический отчет и отчетная документация
+            </div>
+            <div class="card-body text-dark">
+                <hr>
+                {{ formset_model.management_form }}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ formset_model.non_form_errors }}
+                    </div>
+                </div>
+                {% for form in formset_model %}
+                <div class="container font-italic text-center mb-3 ">
+                    {{forloop.counter}}. Редактировать.
+                </div>
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="container">
+                    {{ form.id }}
+                    <div class="form-group">
+                        {% if form.name_report.errors %}
+                        <div class="container text-danger">
+                            {{ form.name_report.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.name_report.label_tag }} {{ form.name_report }}
+                        {% if form.name_report.help_text %}
+                        <p class="help text-black-50">{{ form.name_report.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.report.errors %}
+                        <div class="container text-danger">
+                            {{ form.report.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.report.label_tag }} {{ form.report }}<br>
+                        {% if form.report.help_text %}
+                        <small class="help text-black-50">{{ form.report.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if formset_model.can_delete %}
+                        Удалить: {{ form.DELETE }}
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+
+
+                {{ formset.management_form }}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ formset.non_form_errors }}
+                    </div>
+                </div>
+                {% for form in formset %}
+                <div class="container font-italic text-center mb-3 ">
+                    {{forloop.counter}}. Добавить.
+                </div>
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="form-group">
+                        {% if form.name_report.errors %}
+                        <div class="container text-danger">
+                            {{ form.name_report.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.name_report.label_tag }} {{ form.name_report }}
+                        {% if form.name_report.help_text %}
+                        <p class="help text-black-50">{{ form.name_report.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.report.errors %}
+                        <div class="container text-danger">
+                            {{ form.report.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.report.label_tag }} {{ form.report }}<br>
+                        {% if form.report.help_text %}
+                        <small class="help text-black-50">{{ form.report.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+                <br>
+            </div>
+        </div>
+        <a href="{% url 'stands:experimental-redactor' %}" class="btn btn-dark mb-3" title="Назад">Назад</a>
+        <input type="submit" class="btn btn-dark mb-3" value="Редактировать экспериментальное испытание">
+    </form>
+</div>
+{% else %}
+<div class="container text-center alert alert-danger" role="alert">
+    <h1>Доступ запрещен</h1>
+</div>
+{% endif %}
+<!-- <a href="#" id="hide" onclick="return false">Скрыть комментарии</a>
+<a href="#" id="show" style="display:none" onclick="return false">Показать комментарии</a>
+
+<div id="comments">
+    <p>Комментарий №1</p>
+    <p>Комментарий №2</p>
+    <p>Комментарий №3</p>
+</div> -->
+
+
+
+{% endblock %}
+
+
+
+{% block script %}
+
+<script type="text/javascript">
+    function hideComments() {
+        $("#comments").hide(1000, function() {
+            $("#hide").hide();
+            $("#show").show();
+        });
+    }
+
+    function showComments() {
+        $("#hide").show();
+        $("#show").hide();
+        $("#comments").show(1000);
+    }
+
+    $(document).ready(function() {
+        $("#hide").bind("click", hideComments);
+        $("#show").bind("click", showComments);
+    });
+</script>
+
+{% endblock %}

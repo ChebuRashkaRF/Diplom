@@ -1,0 +1,155 @@
+{% load static %}
+{% load auth_extras %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <!-- Кодировка веб-страницы -->
+    <meta charset="utf-8">
+    <!-- Настройка viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Подключаем Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap4/css/bootstrap.min.css' %}" type="text/css">
+
+    <!-- Подключаем styles -->
+    <link rel="stylesheet" href="{% static 'index/css/style.css' %}" type="text/css">
+
+    <!-- Подключаем DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'DataTables/dataTables.min.css' %}">
+
+    <!-- <script src="{% static 'clone.js' %}"></script> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}"> -->
+    {% block title %}
+    <title>Добро пожаловать</title>
+    {% endblock %}
+
+    <!-- <script type="text/javascript">
+        function cloneMore(selector, type) {
+           var newElement = $(selector).clone(true);
+           var total = $('#id_' + type + '-TOTAL_FORMS').val();
+           newElement.find(':input').each(function() {
+               var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+               var id = 'id_' + name;
+               $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+           });
+           newElement.find('label').each(function() {
+               var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+               $(this).attr('for', newFor);
+           });
+           total++;
+           $('#id_' + type + '-TOTAL_FORMS').val(total);
+           $(selector).after(newElement);
+    }
+
+    $('#add_more').click(function() {
+        cloneMore('div.table:last', 'service');
+    });
+
+
+
+    </script> -->
+
+
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark nav-css">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample03">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'stands:stands-list'%}">Стенды</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'stands:testobjects-list'%}">Объекты испытаний</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.user.is_authenticated %}
+                <li><a class="btn btn-outline-info" href="{% url "logout" %}">Выход</a></li>
+                {% else %}
+                <li><a class="btn btn-outline-info" href="{% url "login" %}">Вход</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <br>
+    <br>
+
+
+
+    {% block content %}
+    {% if not request.user.is_authenticated %}
+    <div class="container">
+        <div class="alert alert-info" role="alert">
+            <h2>Чтобы иметь доступ к данным необходимо <a href="{% url "login" %}" class="btn btn-outline-info" title="войти">войти</a> в систему или <a href="{% url 'register' %}" class="btn btn-outline-info"
+                    title="зарегистрироваться">зарегистрироваться</a></h2>
+        </div>
+    </div>
+    {% else %}
+    <div class="container">
+        <div class="alert alert-info" role="alert">
+            <h2>Добро пожаловать, {{ request.user.first_name }}!</h2>
+        </div>
+    </div>
+    {% endif %}
+    {% endblock %}
+
+    {% if request.user.is_authenticated and request.user|has_group:"Redactor" %}
+    <div class="admin-panel align-items-center">
+        <a href="{% url 'stands:experimental-redactor' %}" class="btn btn-outline-info">Экспериментальные испытангия</a>
+        <a href="{% url 'stands:calculated-redactor' %}" class="btn btn-outline-info">Расчетные испытания</a>
+    </div>
+    {% endif %}
+    {% if request.user.is_authenticated and request.user.is_staff %}
+    <div class="admin-panel align-items-center">
+        <a href="/admin/" class="btn btn-outline-info">Админ</a>
+    </div>
+    {% endif %}
+    <br>
+    <br>
+    <hr>
+    <footer class="container">
+        <p>&copy; Все права защищены 2020</p>
+    </footer>
+
+
+
+    <!-- Подключаем jQuery -->
+    <script src="{% static 'bootstrap4/js/jquery.min.js' %}"></script>
+    <!-- Подключаем плагин Popper -->
+    <script src="{% static 'bootstrap4/js/popper.min.js' %}"></script>
+    <!-- Подключаем Bootstrap JS -->
+    <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
+
+    <!-- Подключаем DataTables jQuery -->
+    <script src="{% static 'DataTables/jquery-3.5.1.js' %}"></script>
+
+    <!-- Подключаем DataTables JS -->
+    <script src="{% static 'DataTables/jquery.dataTables.min.js' %}"></script>
+
+    <!-- <script type="text/javascript">
+    $('#add_more').click(function() {
+        cloneMore('#go.table:last', 'service');
+    });
+
+    </script> -->
+
+    {% block script %}
+
+    {% endblock %}
+
+</body>
+
+
+
+</html>

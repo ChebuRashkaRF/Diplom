@@ -1,0 +1,295 @@
+{% extends "generaltables/general_base.html" %}
+{% load static %}
+{% load auth_extras %}
+
+{% block title %}
+
+<title>Добавление испытателя</title>
+
+{% endblock %}
+
+{% block content %}
+{% if request.user|has_group:"Redactor" %}
+
+<div class="alert alert-secondary text-center" role="alert">
+    Добавление нового ипытателя
+</div>
+<hr>
+<div class="container">
+    <form action="{% url 'stands:tester-add' %}" method="post">
+        {% csrf_token %}
+
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                Испытатель
+            </div>
+            <div class="card-body text-dark">
+                <hr>
+                {{ formset.management_form }}
+                <div class="container">
+                    <div class="text-danger">
+                        {{ formset.non_form_errors }}
+                    </div>
+                </div>
+                {% for form in formset %}
+                {% if forloop.revcounter0 > 5 %}
+                <div class="container font-italic text-center mb-3 ">
+                    {{forloop.counter}}
+                </div>
+                <div class="container">
+                    <div class="text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="form-group">
+                        {% if form.last_name.errors %}
+                        <div class="container text-danger">
+                            {{ form.last_name.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.last_name.label_tag }} {{ form.last_name }}
+                        {% if form.last_name.help_text %}
+                        <p class="help text-black-50">{{ form.last_name.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.middle_name.errors %}
+                        <div class="container text-danger">
+                            {{ form.middle_name.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.middle_name.label_tag }} {{ form.middle_name }}<br>
+                        {% if form.middle_name.help_text %}
+                        <small class="help text-black-50">{{ form.middle_name.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.first_name.errors %}
+                        <div class="container text-danger">
+                            {{ form.first_name.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.first_name.label_tag }} {{ form.first_name }}<br>
+                        {% if form.first_name.help_text %}
+                        <small class="help text-black-50">{{ form.first_name.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.department.errors %}
+                        <div class="container text-danger">
+                            {{ form.department.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.department.label_tag }} {{ form.department }}<br>
+                        {% if form.department.help_text %}
+                        <small class="help text-black-50">{{ form.department.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% if form.post.errors %}
+                        <div class="container text-danger">
+                            {{ form.post.errors }}
+                        </div>
+                        {% endif %}
+                        {{ form.post.label_tag }} {{ form.post }}<br>
+                        {% if form.post.help_text %}
+                        <small class="help text-black-50">{{ form.post.help_text|safe }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+
+
+
+                {% elif forloop.revcounter0 == 4 %}
+
+                <div class="container mb-3">
+
+                    <a href="#" id="hide" class="btn btn-secondary" onclick="return false">Скрыть дополнительные 5 полей</a>
+                    <a href="#" id="show" class="btn btn-secondary" style="display:none" onclick="return false">Показать дополнительные 5 полей</a>
+                </div>
+
+
+                <div id="comments">
+                    <div class="container font-italic text-center mb-3 ">
+                        {{forloop.counter}}
+                    </div>
+                    <div class="container">
+                        <div class="text-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="form-group">
+                            {% if form.last_name.errors %}
+                            <div class="container text-danger">
+                                {{ form.last_name.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.last_name.label_tag }} {{ form.last_name }}
+                            {% if form.last_name.help_text %}
+                            <p class="help text-black-50">{{ form.last_name.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.first_name.errors %}
+                            <div class="container text-danger">
+                                {{ form.first_name.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.first_name.label_tag }} {{ form.first_name }}<br>
+                            {% if form.first_name.help_text %}
+                            <small class="help text-black-50">{{ form.first_name.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.middle_name.errors %}
+                            <div class="container text-danger">
+                                {{ form.middle_name.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.middle_name.label_tag }} {{ form.middle_name }}<br>
+                            {% if form.middle_name.help_text %}
+                            <small class="help text-black-50">{{ form.middle_name.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.department.errors %}
+                            <div class="container text-danger">
+                                {{ form.department.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.department.label_tag }} {{ form.department }}<br>
+                            {% if form.department.help_text %}
+                            <small class="help text-black-50">{{ form.department.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.post.errors %}
+                            <div class="container text-danger">
+                                {{ form.post.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.post.label_tag }} {{ form.post }}<br>
+                            {% if form.post.help_text %}
+                            <small class="help text-black-50">{{ form.post.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+
+
+                    {% else %}
+
+                    <div class="container font-italic text-center mb-3 ">
+                        {{forloop.counter}}
+                    </div>
+                    <div class="container">
+                        <div class="text-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="form-group">
+                            {% if form.last_name.errors %}
+                            <div class="container text-danger">
+                                {{ form.last_name.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.last_name.label_tag }} {{ form.last_name }}
+                            {% if form.last_name.help_text %}
+                            <p class="help text-black-50">{{ form.last_name.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.first_name.errors %}
+                            <div class="container text-danger">
+                                {{ form.first_name.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.first_name.label_tag }} {{ form.first_name }}<br>
+                            {% if form.first_name.help_text %}
+                            <small class="help text-black-50">{{ form.first_name.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.middle_name.errors %}
+                            <div class="container text-danger">
+                                {{ form.middle_name.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.middle_name.label_tag }} {{ form.middle_name }}<br>
+                            {% if form.middle_name.help_text %}
+                            <small class="help text-black-50">{{ form.middle_name.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.department.errors %}
+                            <div class="container text-danger">
+                                {{ form.department.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.department.label_tag }} {{ form.department }}<br>
+                            {% if form.department.help_text %}
+                            <small class="help text-black-50">{{ form.department.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {% if form.post.errors %}
+                            <div class="container text-danger">
+                                {{ form.post.errors }}
+                            </div>
+                            {% endif %}
+                            {{ form.post.label_tag }} {{ form.post }}<br>
+                            {% if form.post.help_text %}
+                            <small class="help text-black-50">{{ form.post.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <br>
+            </div>
+        </div>
+
+        <input type=button class="btn btn-dark mb-3" value="Закрыть окно" onClick="popupWin = window.close()">
+        <input type="submit" class="btn btn-dark mb-3" value="Добавить испытателя">
+    </form>
+</div>
+{% else %}
+<div class="container text-center alert alert-danger" role="alert">
+    <h1>Доступ запрещен</h1>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+
+
+{% block script %}
+
+<script type="text/javascript">
+    function hideComments() {
+        $("#comments").hide(1000, function() {
+            $("#hide").hide();
+            $("#show").show();
+        });
+    }
+
+    function showComments() {
+        $("#hide").show();
+        $("#show").hide();
+        $("#comments").show(1000);
+    }
+
+    $(document).ready(function() {
+        $("#hide").bind("click", hideComments);
+        $("#show").bind("click", showComments);
+    });
+</script>
+
+{% endblock %}
